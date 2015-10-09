@@ -1,0 +1,74 @@
+#! -*- coding: utf-8 -*-
+
+"""
+Web Scraper Project
+
+Scrape data from a regularly updated website livingsocial.com and
+save to a database (postgres).
+
+Scrapy spider part - it actually performs scraping.
+"""
+
+from scrapy.spider import BaseSpider
+from scrapy.selector import HtmlXPathSelector
+from scrapy.contrib.loader import XPathItemLoader
+from scrapy.contrib.loader.processor import Join, MapCompose
+from scrapy.contrib.linkextractors import LinkExtractor
+
+from scraper_app.items import Grailed
+
+
+class GrailedSpider(BaseSpider):
+    """
+    Spider for regularly updated grailed.com site.
+    """
+    name = "grailed"
+    allowed_domains = ["grailed.com"]
+    base_url = "https://www.grailed.com/listings/"
+    start_urls = ["https://www.grailed.com/listings/15003"]
+
+    rules = [
+        Rule(LinkExtractor(
+            allow=['/listings/\d*']),
+            callback='parse',
+            follow=True)
+    ]
+
+   for i in range(100, 10000):
+       start_urls.append(base_url + str(i))
+
+    item_fields = {
+        'created': './/ul[@class = "horizontal-list listing-metadata-list clearfix"]/li[@class="horizontal-list-item listing-metadata-item"]/span/text()',
+        'title_size': './/h1[@class = "designer"]/div/text()',
+        'original_price': './/ul[@class = "horizontal-list price-drops clearfix"]/li/text()',
+        'followers': './/div[@class = "listing-followers"]/p/text()',
+        'listing_text': './/div[@class = "listing-description"]//p/text()',
+        'shipping_price':'.//div[@class = "listing-shipping"]/p/text()',
+        'sellers_wardrobe': './/div[@class = "user-widget medium"]/a/text()',
+        'bought_and_sold': './/div[@class = "user-widget-bottom"]/p[@class= "bought-and-sold"]/text()',
+        'feedback_score': './/div[@class = "green seller-score-top"]/text()'
+    }
+
+    def parse(self, response):
+        """
+        Default callback used by Scrapy to process downloaded responses
+
+        Testing contracts:
+        @url http://www.livingsocial.com/cities/15-san-francisco
+        @returns items 1
+        @scrapes title link
+
+        """
+
+        # iterate over deals
+        for i in range(100,1000):
+            loader = XPathItemLoader(Grailed(), selector=deal)
+
+            # define processors
+            loader.default_input_processor = MapCompose(unicode.strip)
+            loader.default_output_processor = Join()
+
+            # iterate over fields and add xpaths to the loader
+            for field, xpath in self.item_fields.iteritems():
+                loader.add_xpath(field, xpath)
+            yield loader.load_item()
