@@ -39,7 +39,7 @@ class Deals(DeclarativeBase):
     __tablename__ = "deals"
 
     id = Column(Integer, primary_key=True)
-    created = Column('created', String)
+    created = Column('created', String, nullable=True)
     title_size = Column('title_size', String, nullable=True)
     followers = Column('location', String, nullable=True)
     original_price = Column('original_price', String, nullable=True)

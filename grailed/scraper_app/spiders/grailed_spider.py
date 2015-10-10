@@ -1,5 +1,4 @@
 #! -*- coding: utf-8 -*-
-
 """
 Web Scraper Project
 
@@ -8,28 +7,26 @@ save to a database (postgres).
 
 Scrapy spider part - it actually performs scraping.
 """
-
-from scrapy.spiders import BaseSpider
+from scrapy.spiders import Spider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.loader import XPathItemLoader
 from scrapy.loader.processors import Join, MapCompose
-from scrapy.linkextractors import LinkExtractor
 
 from scraper_app.items import Grailed
 
 
-class GrailedSpider(BaseSpider):
+class GrailedSpider(Spider):
     """
     Spider for regularly updated grailed.com site.
     """
     name = "grailed"
     allowed_domains = ["grailed.com"]
     base_url = "https://www.grailed.com/listings/"
-    start_urls = ["https://www.grailed.com/listings/15003"]
+    start_urls = ["https://www.grailed.com/listings/100"]
 
 
-    for i in range(100, 1000):
-       start_urls.append(base_url + str(i))
+    #for i in range(100, 300):
+        #"start_urls.append(base_url + str(i))
 
     item_fields = {
         'created': './/ul[@class = "horizontal-list listing-metadata-list clearfix"]/li[@class="horizontal-list-item listing-metadata-item"]/span/text()',
@@ -37,7 +34,7 @@ class GrailedSpider(BaseSpider):
         'original_price': './/ul[@class = "horizontal-list price-drops clearfix"]/li/text()',
         'followers': './/div[@class = "listing-followers"]/p/text()',
         'listing_text': './/div[@class = "listing-description"]//p/text()',
-        'shipping_price':'.//div[@class = "listing-shipping"]/p/text()',
+        'shipping_price': './/div[@class = "listing-shipping"]/p/text()',
         'sellers_wardrobe': './/div[@class = "user-widget medium"]/a/text()',
         'bought_and_sold': './/div[@class = "user-widget-bottom"]/p[@class= "bought-and-sold"]/text()',
         'feedback_score': './/div[@class = "green seller-score-top"]/text()'
@@ -53,10 +50,11 @@ class GrailedSpider(BaseSpider):
         @scrapes title link
 
         """
+        selector = HtmlXPathSelector(response)
 
         # iterate over deals
-        for i in range(100,1000):
-            loader = XPathItemLoader(Grailed(), selector=Grailed)
+        for i in selector.select(self.start_urls):
+            loader = XPathItemLoader(Grailed(), selector=start_urls)
 
             # define processors
             loader.default_input_processor = MapCompose(unicode.strip)
