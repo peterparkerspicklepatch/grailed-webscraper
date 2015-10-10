@@ -21,6 +21,6 @@ DATABASE = {
     'host': 'localhost',
     'port': '5432',
     'username': DB_USERNAME,
-    'password': DB_PASSWORD
+    'password': DB_PASSWORD,
     'database': 'deals'
 }
