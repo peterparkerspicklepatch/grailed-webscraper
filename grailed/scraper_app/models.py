@@ -39,9 +39,11 @@ class Deals(DeclarativeBase):
     __tablename__ = "deals"
 
     id = Column(Integer, primary_key=True)
-    title = Column('title', String)
-    link = Column('link', String, nullable=True)
-    location = Column('location', String, nullable=True)
-    original_price = Column('original_price', Integer, nullable=True)
-    price = Column('price', Integer, nullable=True)
-    end_date = Column('end_date', DateTime, nullable=True)
+    created = Column('created', String)
+    title_size = Column('title_size', String, nullable=True)
+    followers = Column('location', String, nullable=True)
+    original_price = Column('original_price', String, nullable=True)
+    listing_text = Column('listing_text', String, nullable=True)
+    shipping_price = Column('shipping_price', String, nullable=True)
+    sellers_wardrobe = Column('sellers_wardrobe', String, nullable=True)
+    bought_and_sold = Column('bought_and_sold', String, nullable=True)

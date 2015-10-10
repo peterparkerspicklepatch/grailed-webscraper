@@ -3,17 +3,17 @@
 """
 Web Scraper Project
 
-Scrape data from a regularly updated website livingsocial.com and
+Scrape data from a regularly updated website e.x. livingsocial.com and
 save to a database (postgres).
 
 Scrapy spider part - it actually performs scraping.
 """
 
-from scrapy.spider import BaseSpider
+from scrapy.spiders import BaseSpider
 from scrapy.selector import HtmlXPathSelector
-from scrapy.contrib.loader import XPathItemLoader
-from scrapy.contrib.loader.processor import Join, MapCompose
-from scrapy.contrib.linkextractors import LinkExtractor
+from scrapy.loader import XPathItemLoader
+from scrapy.loader.processors import Join, MapCompose
+from scrapy.linkextractors import LinkExtractor
 
 from scraper_app.items import Grailed
 
@@ -27,14 +27,8 @@ class GrailedSpider(BaseSpider):
     base_url = "https://www.grailed.com/listings/"
     start_urls = ["https://www.grailed.com/listings/15003"]
 
-    rules = [
-        Rule(LinkExtractor(
-            allow=['/listings/\d*']),
-            callback='parse',
-            follow=True)
-    ]
 
-   for i in range(100, 10000):
+    for i in range(100, 1000):
        start_urls.append(base_url + str(i))
 
     item_fields = {
@@ -62,7 +56,7 @@ class GrailedSpider(BaseSpider):
 
         # iterate over deals
         for i in range(100,1000):
-            loader = XPathItemLoader(Grailed(), selector=deal)
+            loader = XPathItemLoader(Grailed(), selector=Grailed)
 
             # define processors
             loader.default_input_processor = MapCompose(unicode.strip)

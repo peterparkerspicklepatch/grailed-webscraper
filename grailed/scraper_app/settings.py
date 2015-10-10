@@ -17,6 +17,6 @@ DATABASE = {
     'host': 'localhost',
     'port': '5432',
     'username': 'phillipblack',  # fill in your username here
-    'password': 'redsox13',  # fill in your password here
-    'database': 'scrape'
+    'password': 'Redsox13!',  # fill in your password here
+    'database': 'deals'
 }
