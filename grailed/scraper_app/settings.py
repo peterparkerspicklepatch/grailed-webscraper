@@ -5,6 +5,7 @@
 #
 #     http://doc.scrapy.org/topics/settings.html
 #
+import os
 
 BOT_NAME = 'Grailed'
 
@@ -23,11 +24,14 @@ DOWNLOADER_MIDDLEWARES = {
 
 ITEM_PIPELINES = ['scraper_app.pipelines.GrailedPipeline']
 
+DB_USERNAME = os.environ.get('DB_USERNAME')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+
 DATABASE = {
     'drivername': 'postgres',
     'host': 'localhost',
     'port': '5432',
-    'username': 'phillipblack',  # fill in your username here
-    'password': 'Redsox13!',  # fill in your password here
+    'username': DB_USERNAME,
+    'password': DB_PASSWORD,
     'database': 'deals'
 }
