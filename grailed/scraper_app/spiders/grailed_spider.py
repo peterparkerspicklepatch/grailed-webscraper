@@ -53,8 +53,8 @@ class GrailedSpider(Spider):
         selector = HtmlXPathSelector(response)
 
         # iterate over deals
-        for i in selector.select(self.start_urls):
-            loader = XPathItemLoader(Grailed(), selector=start_urls)
+        for url in selector.select(self.start_urls):
+            loader = XPathItemLoader(Grailed(), selector=url)
 
             # define processors
             loader.default_input_processor = MapCompose(unicode.strip)
