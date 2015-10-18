@@ -24,20 +24,19 @@ class GrailedSpider(Spider):
     base_url = "https://www.grailed.com/listings/"
     start_urls = ["https://www.grailed.com/listings/100"]
 
-
-    #for i in range(100, 300):
-        #"start_urls.append(base_url + str(i))
+    for url in range(100, 150):
+        start_urls.append(base_url + str(i))
 
     item_fields = {
-        'created': './/ul[@class = "horizontal-list listing-metadata-list clearfix"]/li[@class="horizontal-list-item listing-metadata-item"]/span/text()',
-        'title_size': './/h1[@class = "designer"]/div/text()',
-        'original_price': './/ul[@class = "horizontal-list price-drops clearfix"]/li/text()',
-        'followers': './/div[@class = "listing-followers"]/p/text()',
-        'listing_text': './/div[@class = "listing-description"]//p/text()',
-        'shipping_price': './/div[@class = "listing-shipping"]/p/text()',
-        'sellers_wardrobe': './/div[@class = "user-widget medium"]/a/text()',
-        'bought_and_sold': './/div[@class = "user-widget-bottom"]/p[@class= "bought-and-sold"]/text()',
-        'feedback_score': './/div[@class = "green seller-score-top"]/text()'
+        'created': '//ul[@class = "horizontal-list listing-metadata-list clearfix"]/li[@class="horizontal-list-item listing-metadata-item"][1]/span[2]/text()',
+        'title_size': '//h1[@class = "designer"]/div/text()',
+        'original_price': '//ul[@class = "horizontal-list price-drops clearfix"]/li/text()',
+        'followers': '//div[@class = "listing-followers"]/p/text()',
+        #'listing_text': '//div[@class = "listing-description"]//p/text()',
+        'shipping_price': '//div[@class = "listing-shipping"]/p/text()',
+        'sellers_wardrobe': '//div[@class = "user-widget medium"]/a/text()',
+        'bought_and_sold': '//div[@class = "user-widget-bottom"]/p[@class= "bought-and-sold"]/text()[1]',
+        'feedback_score': '//div[@class = "green seller-score-top"]/text()[2]'
     }
 
     def parse(self, response):
@@ -53,7 +52,7 @@ class GrailedSpider(Spider):
         selector = HtmlXPathSelector(response)
 
         # iterate over deals
-        for url in selector.select(self.start_urls):
+        for url in selector.xpath(self.start_urls):
             loader = XPathItemLoader(Grailed(), selector=url)
 
             # define processors

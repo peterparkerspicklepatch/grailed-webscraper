@@ -15,10 +15,10 @@ from scrapy.item import Item, Field
 class Grailed(Item):
     """Grailed container (dictionary-like object) for scraped data"""
     created = Field()
-    title_size = Field()
-    original_price = Field()
-    followers = Field()
-    listing_text = Field()
-    shipping_price = Field()
-    sellers_wardrobe = Field()
-    bought_and_sold = Field()
+    #title_size = Field()
+    #original_price = Field()
+    #followers = Field()
+    #listing_text = Field()
+    #shipping_price = Field()
+    #sellers_wardrobe = Field()
+    #bought_and_sold = Field()
